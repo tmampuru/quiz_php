@@ -1,6 +1,29 @@
 <?php
 
+$errors = "";
+$db = mysqli_connect("154.0.173.16", "tmampuxe_tmampuru", "@321Tmampuru", "tmampuxe_quiz");
+if (isset($_POST['submit'])) {
+		if (empty($_POST['question'])) {
+			$errors = "You must fill in the question";
+		} else{
+			$question = $_POST['question'];
+      $answer1 = $_POST['answer1'];
+      $answer2 = $_POST['answer2'];
+      $answer3 = $_POST['answer3'];
+      $answer4 = $_POST['answer4'];
+      $category = $_POST['category'];
+			$sql = "INSERT INTO quiz (question, answer1, answer2, answer3, answer4, category) VALUES ('$question', '$answer1', '$answer2', '$answer3', '$answer4', '$category')";
+			mysqli_query($db, $sql);
+			header('location: index.php');
+		}
+}
 
+if (isset($_GET['del_question'])) {
+	$id = $_GET['del_question'];
+
+	mysqli_query($db, "DELETE FROM quiz WHERE id=".$id);
+	header('location: index.php');
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -17,9 +40,82 @@
 </head>
 
 <body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="box-shadow: 0 1px 0 rgba(12,13,14,0.1), 0 1px 6px rgba(59,64,69,0.1);">
+      <a class="navbar-brand" href="#">Quiz</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Summary</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
   <div class="container">
-    <div class="progress">
-      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    <!-- Enter Question -->
+
+      <div class="input-group mb-3" method="post" action="index.php">
+        <form method="post" action="index.php">
+        <input name="question" type="text" class="form-control" placeholder="Enter Question" aria-label="Enter Question" aria-describedby="button-addon2"><br>
+				  <div class="col"><input name="answer1" type="text" class="form-control" placeholder="Correct Answer 1" aria-label="Possible Answer 1" aria-describedby="button-addon2"></div>
+				  <div class="col"><input name="answer2" type="text" class="form-control" placeholder="Possible Answer 2" aria-label="Possible Answer 2" aria-describedby="button-addon2"></div>
+				  <div class="col"><input name="answer3" type="text" class="form-control" placeholder="Possible Answer 3" aria-label="Possible Answer 3" aria-describedby="button-addon2"></div>
+				  <div class="col"><input name="answer4" type="text" class="form-control" placeholder="Possible Answer 4" aria-label="Possible Answer 4" aria-describedby="button-addon2"></div><br>
+				<div class="input-group mb-3">
+        <select name="category" class="custom-select" id="inputGroupSelect02">
+          <option name="category" selected>Select Category...</option>
+          <option name="category" value="Accounts">Accounts</option>
+          <option name="category" value="Mojo">Mojo</option>
+          <option name="category" value="ADSL">ADSL</option>
+          <option name="category" value="Fibre">Fibre</option>
+          <option name="category" value="Hosting">Hosting</option>
+          <option name="category" value="Mobile">Mobile</option>
+          <option name="category" value="Fixed Wireless">Fixed Wireless</option>
+        </select>
+        <div class="input-group-append">
+          <label class="input-group-text" for="inputGroupSelect02">Options</label>
+          </div>
+        </div><br>
+        <input name="submit" type="submit" class="form-control" placeholder="Submit" aria-label="Submit" aria-describedby="button-addon2">
+				<?php if (isset($errors)) { ?>
+					<p class="alert"><?php echo $errors; ?></p>
+				<?php } ?>
+      </form>
+      </div>
+
+    <!-- List of Questions -->
+    <div class="mytable">
+      <table>
+        <tr>
+					<th>Category</th>
+          <th>Question</th>
+          <th>Possible answers</th>
+          <th>Delete</th>
+        </tr>
+        <tr>
+          <?php
+          // load all quiz on refresh
+          $quiz = mysqli_query($db, "SELECT * FROM quiz");
+          $i = 1; while ($row = mysqli_fetch_array($quiz)) { ?>
+          <td> <?php echo $row['category']; ?> </td>
+          <td> <?php echo $i; ?>. <?php echo $row['question']; ?> </td>
+					<td> <?php echo $row['answer1']. ", " . $row['answer2']. ", " . $row['answer3']. ", " . $row['answer4'];?> </td>
+          <td><a href="index.php?del_question=<?php echo $row['id'] ?>">remove</a></td>
+        </tr>
+        <?php $i++; } ?>
+
+      </table>
+
     </div>
   </div>
 

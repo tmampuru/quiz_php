@@ -4,21 +4,37 @@ body {
 label {
   display: flex !important;
   height: 3rem;
-  background-color: #e9ecef;
+  background-color: white;
+  color: #504d4d;
   border-radius: .25rem;
-  box-shadow: 0px 0px 12px #86ff8b;
+  box-shadow: 0px 0px 12px #ffffff;
 }
-button, input, optgroup, select, textarea {
+label > p {
+  margin: 8px 0px 0px 0px;
+  font-size: 22px;
+}
+.checkbox input {
   margin: 16px !important;
 }
-p {
-    margin-top: 3vh !important;
+.form-control {
+  margin: 12px !important;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  color: #212529;
+  background-color: #dddddd;
+  color: #504d4d;
+  text-align: left;
+  padding: 8px;
+}
+form {
+  display: contents;
 }
 .container {
   margin-top: 12vh;
-}
-.quizSection {
-
 }
 .question {
   margin-top: 8vh;
@@ -26,4 +42,15 @@ p {
 .question p {
   font-size: 2em;
   font-weight: 100;
+}
+.page-link, .page-item {
+  background-color: #e9ecef;
+  color: #4c4e4f;
+  border-color: #28a745;
+}
+.mytable {
+  margin-top: 20em;
+}
+.alert {
+  color: red;
 }
