@@ -1,7 +1,7 @@
 <?php
 
 $errors = "";
-$db = mysqli_connect("154.0.173.16", "tmampuxe_tmampuru", "@321Tmampuru", "tmampuxe_quiz");
+$db = mysqli_connect("", "", "", "tmampuxe_quiz"); // "server IP" then "username" then "pass" then "db"
 if (isset($_POST['submit'])) {
 		if (empty($_POST['question'])) {
 			$errors = "You must fill in the question";
